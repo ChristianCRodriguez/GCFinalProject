@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+@{
+    
+    int healthstatus = 100;
+    int answercorrect = 0;
+    int totallevelvalue = 10;
+    int newaddvalue = answercorrect * totallevelvalue;
+
+    if (answercorrect >= 5)
+    {
+
+        if (healthstatus + newaddvalue < 100)
+        {
+            healthstatus = healthstatus + newaddvalue;
+        }
+        else if (healthstatus < 100)
+        {
+            int differencevalue = healthstatus - 100;
+            if (newaddvalue > differencevalue)
+            {
+                healthstatus = healthstatus + differencevalue;
+            }
+            else
+            {
+                healthstatus = healthstatus + newaddvalue;
+            }
+        }
+        else
+        {
+            <h2>Can't add more</h2>
+        }
+    }
+    else
+    {
+        if (healthstatus <= 0 || healthstatus - newaddvalue <= 0)
+        {
+            <h1>Went to the farm</h1>
+        }
+        else
+        {
+            healthstatus = healthstatus - newaddvalue;
+        }
+
+
+
+    }
+  }
