@@ -14,7 +14,7 @@ namespace GCFinalProject.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private IConfiguration _config;
+        private readonly IConfiguration _config;
 
         public HomeController(ILogger<HomeController> logger, IConfiguration config)
         {
@@ -24,15 +24,9 @@ namespace GCFinalProject.Controllers
 
         public async Task<IActionResult> Index()
         {
-            using (HttpClient httpClient = new HttpClient())
-            {
-                httpClient.DefaultRequestHeaders.Add("Authorization", _config["MathApiKey"]);
-                using (var response = await httpClient.GetAsync("https://studycounts.com/api/v1/arithmetic/simple.json"))
-                {
-                    string test = await response.Content.ReadAsStringAsync();
-                }
-            }
-            return View();
+            MathApi test = new MathApi();
+            Question bare = await test.GetQuestion(MathCategories.QuadraticEquations, _config["MathApiKey"]);
+            return View(bare);
         }
 
         public IActionResult Privacy()
