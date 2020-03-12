@@ -24,6 +24,7 @@ namespace GCFinalProject.Controllers
             //fancy highligt when at 100  
 
             return View();
+
         }
     }
 }
