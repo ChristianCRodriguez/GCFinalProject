@@ -98,7 +98,8 @@ namespace GCFinalProject.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
+                        return RedirectToPage("Login");
+                        //return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
                     }
                     else
                     {
