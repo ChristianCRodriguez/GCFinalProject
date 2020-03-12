@@ -6,10 +6,10 @@
 <div class="text-center"><h1> @Html.Raw(Model.question)</h1></div>
 <div class="text-center">
     <table class="table" align="center" border="0">
-        @foreach (var c in Model.choice)
+        @foreach (var c in Model.choices)
         {
             <tr class="text-center" border="0">
-                <td class="text-center">@Html.Raw(c) <input class="text-center" type="checkbox" name="checked" value="@Model.choice" /></td>
+                <td class="text-center">@Html.Raw(c) <input class="text-center" type="checkbox" name="checked" value="@Model.choices" /></td>
             </tr>
         }
     </table>

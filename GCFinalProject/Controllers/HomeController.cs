@@ -25,7 +25,7 @@ namespace GCFinalProject.Controllers
         public async Task<IActionResult> Index()
         {
             MathApi test = new MathApi();
-            Question bare = await test.GetQuestion(MathCategories.QuadraticEquations, _config["MathApiKey"]);
+            Question bare = await test.GetQuestion(MathCategories.SimpleArithmetic, _config["MathApiKey"]);
             return View(bare);
         }
 

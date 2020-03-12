@@ -12,6 +12,7 @@ namespace GCFinalProject
 {
     public class MathApi
     {
+        private JsonDocument jdoc;
         private readonly string siteLink = "https://studycounts.com";
         public MathApi()
         {
@@ -27,7 +28,9 @@ namespace GCFinalProject
                 using (var response = await httpClient.GetAsync(siteLink + category))
                 {
                     string test = await response.Content.ReadAsStringAsync();
+                    jdoc = JsonDocument.Parse(test);
                     question = JsonSerializer.Deserialize<Question>(test);
+
                 }
             }
             return question;

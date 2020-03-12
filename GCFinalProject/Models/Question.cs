@@ -9,7 +9,7 @@ namespace GCFinalProject.Models
     {
         public string id { get; set; }
         public string question { get; set; }
-        public List<string> choice { get; set; }
+        public List<string> choices { get; set; }
         public int correct_choice { get; set; }
         public string instruction { get; set; }
         public string category { get; set; }
