@@ -38,7 +38,7 @@ namespace GCFinalProject.Controllers
 
         }
 
-        public async Task<IActionResult> QuizQuestion(string difficulty)
+        public async Task<IActionResult> QuizQuestion(string difficulty = "beginner")
         {
             MathApi test = new MathApi();
             Question bare = await test.GetQuestion(MathCategories.SimpleArithmetic, _config["MathApiKey"], difficulty);
