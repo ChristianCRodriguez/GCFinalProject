@@ -19,13 +19,13 @@ namespace GCFinalProject
 
         }
 
-        public async Task<Question> GetQuestion(string category, string apiKey)
+        public async Task<Question> GetQuestion(string category, string apiKey, string difficulty = "beginner")
         {
             Question question = new Question();
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Add("Authorization", apiKey);
-                using (var response = await httpClient.GetAsync(siteLink + category))
+                using (var response = await httpClient.GetAsync(siteLink + category +"?" + difficulty.ToLower()))
                 {
                     string test = await response.Content.ReadAsStringAsync();
                     jdoc = JsonDocument.Parse(test);

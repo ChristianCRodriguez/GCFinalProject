@@ -2,12 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GCFinalProject.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace GCFinalProject.Controllers
 {
     public class GamePlayController : Controller
     {
+        private readonly ILogger<HomeController> _logger;
+        private readonly IConfiguration _config;
+
+        public GamePlayController(ILogger<HomeController> logger, IConfiguration config)
+        {
+            _logger = logger;
+            _config = config;
+        }
         public IActionResult Index()
         {
             //call api
@@ -25,6 +36,13 @@ namespace GCFinalProject.Controllers
 
             return View();
 
+        }
+
+        public async Task<IActionResult> QuizQuestion(string difficulty)
+        {
+            MathApi test = new MathApi();
+            Question bare = await test.GetQuestion(MathCategories.SimpleArithmetic, _config["MathApiKey"], difficulty);
+            return View("~/Views/GamePlay/Quiz.cshtml",bare);
         }
     }
 }
