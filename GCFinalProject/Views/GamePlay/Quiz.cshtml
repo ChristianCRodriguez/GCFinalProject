@@ -3,26 +3,36 @@
     ViewData["Title"] = "Quiz";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var test = Model.correct_choice;
+    int i = 0;
 }
 
-<h1>Quiz</h1>
-
-<div class="text-center">
-    <h1>
-        @Html.Raw(Model.question)
-    </h1>
+<h1>Question</h1>
+<div class="container text-center">
+    <div class="row">
+        <div class="col">
+            <h1 id="question">
+                @Html.Raw(Model.question)
+            </h1>
+            <table class="table" align="center" border="0">
+                <tbody>
+                    @foreach (var c in Model.choices)
+                    {
+                        <tr class="text-center" border="0">
+                            <td class="text-center">@Html.Raw(c) <input class="text-center" type="checkbox" name="checked" value="@i" /></td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-<div class="text-center">
-    <table class="table" align="center" border="0">
-        <tbody>
-            @foreach (var c in Model.choices)
-            {
-                <tr class="text-center" border="0">
-                    <td class="text-center">@Html.Raw(c) <input class="text-center" type="checkbox" name="checked" value="@c" /></td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<div class="container text-center" id="correctAnswerNextButtons" hidden>
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-secondary" id="finishQuiz">Finish</button>&nbsp;<button class="btn btn-primary" id="nextQuestion">Next Question</button>
+        </div>
+    </div>
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -31,14 +41,27 @@
         $('input[type="checkbox"]').click(function () {
             //let questionID = "@Model.id";
             var checkboxChecked = $(this).attr("value");
-            if ($(this).prop("checked") == true) {
-                alert(checkboxChecked);
+            var correct = @Model.correct_choice;
+            if (checkboxChecked != correct) {
+                alert("Incorrect Answer");
                 $(this).prop("checked", false);
                 $(this).prop("disabled", true);
             }
-            else if ($(this).prop("checked") == false) {
-                alert("Checkbox is unchecked.");
+            else{
+                alert("Correct!");
+                $('#correctAnswerNextButtons').prop("hidden", false);
             }
         });
+        //Trying to use ajax to call api and set new question
+        //$('nextQuestion').click(function () {
+        //    $.ajax({
+        //        type: 'GET',
+        //        url: '/GamePlay/QuizQuestion',
+        //        success: function (result) {
+        //            $('#question').prop("hidden", true);
+        //        }
+        //    });
+        //});
+        
     });
 </script>
