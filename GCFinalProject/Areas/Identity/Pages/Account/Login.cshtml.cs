@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace GCFinalProject.Areas.Identity.Pages.Account
 {
@@ -83,7 +84,7 @@ namespace GCFinalProject.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    
+                    HttpContext.Session.SetInt32("test", 4);
                     return RedirectToAction("Player", "Player");
                 }
                 if (result.RequiresTwoFactor)

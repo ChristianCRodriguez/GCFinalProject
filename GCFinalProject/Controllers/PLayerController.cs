@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GCFinalProject.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -24,8 +25,9 @@ namespace GCFinalProject.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Player()
+        public IActionResult Player()
         {
+            var UserID = HttpContext.Session.GetInt32("test");
             return View();
         }
     }
