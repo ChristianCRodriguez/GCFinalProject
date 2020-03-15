@@ -25,8 +25,9 @@ namespace GCFinalProject.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Player()
+        public IActionResult Player()
         {
+            Global.CurrentPlayerScore = 0;
             return View();
         }
 

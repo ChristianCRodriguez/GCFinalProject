@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GCFinalProject.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -13,7 +14,7 @@ namespace GCFinalProject.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _config;
-
+        private MathGameDBContext db = new MathGameDBContext();
         public GamePlayController(ILogger<HomeController> logger, IConfiguration config)
         {
             _logger = logger;
@@ -38,11 +39,43 @@ namespace GCFinalProject.Controllers
 
         }
 
+        [HttpPost]
+        public string ValidateQuizAnswer(int playerAnswer, int correctAnswer)
+        {
+            if (playerAnswer == correctAnswer)
+            {
+                Global.CurrentPlayerScore++;
+                return "Correct";
+            }
+            else
+            {
+                return "False";
+            }
+        }
+
+        public IActionResult QuizComplete()
+        {
+            int score = Global.CurrentPlayerScore;
+            //add score to player
+            //add time to avatar
+            ResetQuiz();
+            return View("~/Views/GamePlay/QuizComplete.cshtml", score);
+        }
+
         public async Task<IActionResult> QuizQuestion(string difficulty)
         {
+#warning Need to figure out logic for question from view
+            Global.CurrentPlayerLevel = difficulty;
+            difficulty = difficulty == "" ? Global.CurrentPlayerLevel : difficulty;
             MathApi test = new MathApi();
             Question bare = await test.GetQuestion(MathCategories.SimpleArithmetic, _config["MathApiKey"], difficulty);
             return View("~/Views/GamePlay/Quiz.cshtml",bare);
+        }
+
+        public void ResetQuiz()
+        {
+            Global.CurrentPlayerLevel = "Get Default Player Difficutly";
+            Global.CurrentPlayerScore = 0;
         }
     }
 }
