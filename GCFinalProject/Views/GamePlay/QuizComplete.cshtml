@@ -1,0 +1,15 @@
+﻿@model int
+@{
+    ViewData["Title"] = "QuizComplete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Quiz Complete!</h1>
+@if (Model > 1)
+{
+    <p>You earned a total of @Model points</p>
+}
+else
+{
+    <p>You earned a total of @Model point</p>
+}

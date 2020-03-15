@@ -84,7 +84,7 @@ namespace GCFinalProject.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    HttpContext.Session.SetInt32("test", 4);
+                    //HttpContext.Session.SetInt32("PlayerCurrentScore", 0);
                     return RedirectToAction("Player", "Player");
                 }
                 if (result.RequiresTwoFactor)

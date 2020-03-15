@@ -24,13 +24,20 @@
                     }
                 </tbody>
             </table>
+            <p id="IsCorrectAnswer"></p>
         </div>
     </div>
 </div>
 <div class="container text-center" id="correctAnswerNextButtons" hidden>
     <div class="row">
         <div class="col">
-            <button class="btn btn-secondary" id="finishQuiz">Finish</button>&nbsp;<button class="btn btn-primary" id="nextQuestion">Next Question</button>
+            <form asp-action="QuizComplete" asp-controller="GamePlay">
+                <input type="submit" class="btn btn-secondary" id="finishQuiz" value="Finish" />
+            </form>
+            &nbsp;
+            <form asp-action="QuizQuestion" asp-controller="GamePlay">
+                <input type="submit" class="btn btn-primary" id="nextQuestion" value="Next Question" />
+            </form>
         </div>
     </div>
 </div>
@@ -39,29 +46,32 @@
 <script>
     $(document).ready(function () {
         $('input[type="checkbox"]').click(function () {
-            //let questionID = "@Model.id";
             var checkboxChecked = $(this).attr("value");
             var correct = @Model.correct_choice;
-            if (checkboxChecked != correct) {
-                alert("Incorrect Answer");
-                $(this).prop("checked", false);
-                $(this).prop("disabled", true);
+
+            $.ajax({
+            type: "POST",
+            url: "/GamePlay/ValidateQuizAnswer",
+            data: {playerAnswer: checkboxChecked, correctAnswer: correct},
+            dataType: "text",
+            success: function (msg) {
+                if (msg != "Correct") {
+                    var test = $("input:checked");
+                    test.prop("checked", false);
+                    test.prop("disabled", true);
+                    $("#IsCorrectAnswer").html("Incorrect Answer");
+                }
+                else{
+                    $('#correctAnswerNextButtons').prop("hidden", false);
+                    $("#IsCorrectAnswer").html("Correct Answer");
+                    $('input[type="checkbox"]').prop("disabled", true);
+                }
+            },
+            error: function (req, status, error) {
+                alert(error);
             }
-            else{
-                alert("Correct!");
-                $('#correctAnswerNextButtons').prop("hidden", false);
-            }
+            });
         });
-        //Trying to use ajax to call api and set new question
-        //$('nextQuestion').click(function () {
-        //    $.ajax({
-        //        type: 'GET',
-        //        url: '/GamePlay/QuizQuestion',
-        //        success: function (result) {
-        //            $('#question').prop("hidden", true);
-        //        }
-        //    });
-        //});
         
     });
 </script>

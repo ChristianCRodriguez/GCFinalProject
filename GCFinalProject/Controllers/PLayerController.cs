@@ -27,7 +27,7 @@ namespace GCFinalProject.Controllers
 
         public IActionResult Player()
         {
-            var UserID = HttpContext.Session.GetInt32("test");
+            Global.CurrentPlayerScore = 0;
             return View();
         }
     }
