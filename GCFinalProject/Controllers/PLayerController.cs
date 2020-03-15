@@ -30,5 +30,23 @@ namespace GCFinalProject.Controllers
             Global.CurrentPlayerScore = 0;
             return View();
         }
+
+        public IActionResult Status()
+        {
+            MathGameDBContext db = new MathGameDBContext();
+            var playerList = db.Player.ToList();
+            var userList = db.AspNetUsers.ToList();
+            var UserID = HttpContext.Session.GetInt32("current");
+
+            foreach (Player u in db.Player)
+
+            {
+                if (u.PlayerId == UserID)
+                    ViewBag.PlayerScore = u.PlayerScore;
+                  
+            }
+
+            return View("Player");
+        }
     }
 }

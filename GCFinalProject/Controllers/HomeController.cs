@@ -21,7 +21,7 @@ namespace GCFinalProject.Controllers
             _logger = logger;
             _config = config;
         }
-
+        
         public IActionResult Index()
         {
             return RedirectToAction("Player", "Player");
