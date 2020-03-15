@@ -22,7 +22,7 @@ namespace GCFinalProject.Controllers
             _config = config;
         }
 
-        public async Task<IActionResult> Index()
+        public /*async Task<*/IActionResult/*>*/ Index()
         {
             //MathApi test = new MathApi();
             //Question bare = await test.GetQuestion(MathCategories.SimpleArithmetic, _config["MathApiKey"]);
