@@ -62,11 +62,20 @@ namespace GCFinalProject.Controllers
             return View("~/Views/GamePlay/QuizComplete.cshtml", score);
         }
 
+        //101046445745 apple case id
+
         public async Task<IActionResult> QuizQuestion(string difficulty)
         {
-#warning Need to figure out logic for question from view
-            Global.CurrentPlayerLevel = difficulty;
-            difficulty = difficulty == "" ? Global.CurrentPlayerLevel : difficulty;
+            if (Global.CurrentPlayerLevel == null)
+            {
+                Global.CurrentPlayerLevel = difficulty;
+            }
+
+            if(difficulty == null)
+            {
+                difficulty = Global.CurrentPlayerLevel;
+            }
+
             MathApi test = new MathApi();
             Question bare = await test.GetQuestion(MathCategories.SimpleArithmetic, _config["MathApiKey"], difficulty);
             return View("~/Views/GamePlay/Quiz.cshtml",bare);
