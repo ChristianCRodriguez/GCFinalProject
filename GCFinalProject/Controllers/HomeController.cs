@@ -24,7 +24,8 @@ namespace GCFinalProject.Controllers
         
         public IActionResult Index()
         {
-            return RedirectToAction("Player", "Player");
+            // return RedirectToAction("Player", "Player");
+            return View();
         }
 
         public IActionResult Privacy()
