@@ -43,15 +43,17 @@ namespace GCFinalProject.Controllers
             {
                 if (u.PlayerId == UserID)
                     ViewBag.PlayerScore = u.PlayerScore;
-                //if (u.PlayerScore<=100  && u.PlayerScore>=80)
-                //{
-
-                //}
+               
               
                   
             }
 
             return View("Player");
         }
+        public IActionResult IsFirstTimeLogginIn()
+        {
+            return View();
+        }
+
     }
 }

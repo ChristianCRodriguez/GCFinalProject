@@ -18,10 +18,27 @@
 
 
     <div class="form-group">
-        <input type="submit" class="form-control btn btn-primary" value="Start Quiz"/>
+        <input type="submit" class="form-control btn btn-primary" value="Start Quiz" />
     </div>
 
+    
 
+    @if (Global.CurrentPlayerScore <= 100 && Global.CurrentPlayerScore >= 70)
+        {
+            <img id="img_Happy" src="@Url.Content("~/Images/Happy.jpg")" />
+        }
+        else if (Global.CurrentPlayerScore <= 69 && Global.CurrentPlayerScore >= 40)
+        {
+            <img id="img_Hungry" src="@Url.Content("~/Images/Hungry.jpg")" />
+        }
+        else if (Global.CurrentPlayerScore <= 39 && Global.CurrentPlayerScore >= 1)
+        {
+            <img id="img_Angry" src="@Url.Content("~/Images/Angry.jpg")" />
+        }
+        else
+        {
+            <img id="img_Farm" src="@Url.Content("~/Images/Farm.jpg")" />
+        }
 </form>
 
 
