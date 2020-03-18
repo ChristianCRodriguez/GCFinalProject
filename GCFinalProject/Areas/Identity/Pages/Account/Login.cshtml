@@ -5,7 +5,7 @@
     ViewData["Title"] = "Log in";
 }
 
-    <h4>Please Enter your Email and Password</h4>
+    <h3><b>Please Enter your Email and Password</b></h3>
 
 @*<h1>@ViewData["Title"]</h1>*@
 <div class="row">
@@ -16,12 +16,12 @@
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="Input.Email"></label>
+                   <b><label asp-for="Input.Email"></label></b> 
                     <input asp-for="Input.Email" class="form-control" />
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.Password"></label>
+                    <b><label asp-for="Input.Password"></label></b> 
                     <input asp-for="Input.Password" class="form-control" />
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
@@ -34,14 +34,14 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Log in</button>
+                    <button type="submit" class="btn btn-primary"><b>Log in</b></button>
                 </div>
-                <div class="form-group">
+                <div class="form-group"></b>
                     <p>
-                        <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
+                        <a id="forgot-password" asp-page="./ForgotPassword"><b>Forgot your password?</b></a>
                     </p>
                     <p>
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"><b>Register as a new user</b></a>
                     </p>
                 </div>
             </form>
