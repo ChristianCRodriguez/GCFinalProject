@@ -23,13 +23,13 @@
 
     
 
-    @if (Global.CurrentPlayerScore <= 100 && Global.CurrentPlayerScore >= 70)
+       @if (Global.CurrentPlayerScore <= 100 && Global.CurrentPlayerScore >= 70)
         {
             <img id="img_Happy" src="@Url.Content("~/Images/Happy.jpg")" />
         }
         else if (Global.CurrentPlayerScore <= 69 && Global.CurrentPlayerScore >= 40)
         {
-            <img id="img_Hungry" src="@Url.Content("~/Images/Hungry.jpg")" />
+            <img id="img_Hungry" src="@Url.Content("~/Images/Hungry2.jpg")" />
         }
         else if (Global.CurrentPlayerScore <= 39 && Global.CurrentPlayerScore >= 1)
         {
@@ -37,7 +37,7 @@
         }
         else
         {
-            <img id="img_Farm" src="@Url.Content("~/Images/Farm.jpg")" />
+            <img id="img_Farm" src="@Url.Content("~/Images/Farm2.jpg")" />
         }
 </form>
 
