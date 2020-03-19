@@ -18,7 +18,7 @@
                     @foreach (var c in Model.choices)
                     {
                         <tr class="text-center" border="0">
-                            <td class="text-center">@Html.Raw(c) <input class="text-center" type="checkbox" name="checked" value="@i" /></td>
+                            <td class="text-center">@Html.Raw(c) <input class="text-center" id="questionCheckbox" type="checkbox" name="checked" value="@i" /></td>
                         </tr>
                         i++;
                     }
