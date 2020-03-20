@@ -7,17 +7,25 @@
 <h1><b>@User.Identity.Name</b></h1>
 
 
-@if (Global.CurrentPlayerScore <= 100 && Global.CurrentPlayerScore >= 70)
+@if (Global.CurrentPlayerScore == 240)
 {
-    <img id="img_Happy" src="@Url.Content("~/Images/Happy.jpg")" />
+    <img id="img_Happy" src="@Url.Content("~/Images/Excited Nerd.jpg")" />
 }
-else if (Global.CurrentPlayerScore <= 69 && Global.CurrentPlayerScore >= 40)
+else if (Global.CurrentPlayerScore <= 239 && Global.CurrentPlayerScore >= 181)
 {
-    <img id="img_Hungry" src="@Url.Content("~/Images/Hungry.jpg")" />
+    <img id="img_Hungry" src="@Url.Content("~/Images/Happyy.jpg")" />
 }
-else if (Global.CurrentPlayerScore <= 39 && Global.CurrentPlayerScore >= 1)
+else if (Global.CurrentPlayerScore <= 180 && Global.CurrentPlayerScore >= 121)
 {
-    <img id="img_Angry" src="@Url.Content("~/Images/Angry.jpg")" />
+    <img id="img_Angry" src="@Url.Content("~/Images/Excited.jpg")" />
+}
+else if (Global.CurrentPlayerScore <= 120 && Global.CurrentPlayerScore >= 61)
+{
+    <img id="img_Angry" src="@Url.Content("~/Images/Frustrated.jpg")" />
+}
+else if (Global.CurrentPlayerScore <= 60 && Global.CurrentPlayerScore >= 1)
+{
+    <img id="img_Angry" src="@Url.Content("~/Images/Sad.jpg")" />
 }
 else
 {
