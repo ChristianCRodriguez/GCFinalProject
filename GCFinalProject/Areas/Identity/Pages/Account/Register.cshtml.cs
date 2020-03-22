@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
@@ -102,7 +103,9 @@ namespace GCFinalProject.Areas.Identity.Pages.Account
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("Login");
+                        var routeValues = new RouteValueDictionary { { "email", Input.Email} };
+                        return RedirectToAction("CreatePlayer", "Player", routeValues);
+                        //return RedirectToPage("Login");
                         //return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
                     }
                     else

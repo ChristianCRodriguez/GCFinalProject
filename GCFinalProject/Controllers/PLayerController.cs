@@ -14,6 +14,7 @@ namespace GCFinalProject.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _config;
+        private MathGameDBContext db = new MathGameDBContext();
 
         public PlayerController(ILogger<HomeController> logger, IConfiguration config)
         {
@@ -25,31 +26,48 @@ namespace GCFinalProject.Controllers
             return View();
         }
 
-        public IActionResult Player()
+        public IActionResult CreatePlayer(string email)
         {
-            Global.CurrentPlayerScore = 0;
-            return View();
+            string newAccount = "NewAccount";
+            DateTime today = DateTime.Now;
+            Player player = new Player();
+            player.PlayerId = db.AspNetUsers.SingleOrDefault(u => u.Email == email).Id;
+            player.PlayerScore = 0;
+            player.LastUpdatedDay = today;
+            player.CreatedDay = today;
+            player.IsFirstTimeLoggingIn = true;
+            player.DifficultyLevel = "Beginner";
+
+            db.Player.Add(player);
+
+            db.SaveChanges();
+            return View("~/Views/Home/Index.cshtml",newAccount);
         }
 
-        public IActionResult Status()
+        public IActionResult Player()
         {
-            MathGameDBContext db = new MathGameDBContext();
-            var playerList = db.Player.ToList();
-            var userList = db.AspNetUsers.ToList();
-            var UserID = HttpContext.Session.GetInt32("current");
+            return View(); 
+        }
 
-            foreach (Player u in db.Player)
+        //public IActionResult Status()
+        //{
+        //    MathGameDBContext db = new MathGameDBContext();
+        //    var playerList = db.Player.ToList();
+        //    var userList = db.AspNetUsers.ToList();
+        //    var UserID = HttpContext.Session.GetInt32("current");
 
-            {
-                if (u.PlayerId == UserID)
-                    ViewBag.PlayerScore = u.PlayerScore;
+        //    foreach (Player u in db.Player)
+
+        //    {
+        //        if (u.PlayerId == UserID)
+        //            ViewBag.PlayerScore = u.PlayerScore;
                
               
                   
-            }
+        //    }
 
-            return View("Player");
-        }
+        //    return View("Player");
+        //}
         public IActionResult IsFirstTimeLogginIn()
         {
             return View();

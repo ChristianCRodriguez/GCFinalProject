@@ -5,11 +5,14 @@ namespace GCFinalProject.Models
 {
     public partial class Player
     {
-        public int PlayerId { get; set; }
-        public string PlayerEmail { get; set; }
-        public int? PlayerScore { get; set; }
+        public int Id { get; set; }
+        public double PlayerScore { get; set; }
         public string DifficultyLevel { get; set; }
         public DateTime? CreatedDay { get; set; }
         public DateTime? LastUpdatedDay { get; set; }
+        public bool IsFirstTimeLoggingIn { get; set; }
+        public string PlayerId { get; set; }
+
+        public virtual AspNetUsers PlayerNavigation { get; set; }
     }
 }

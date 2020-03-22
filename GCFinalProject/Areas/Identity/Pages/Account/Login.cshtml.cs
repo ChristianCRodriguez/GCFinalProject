@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
+using GCFinalProject.Models;
 
 namespace GCFinalProject.Areas.Identity.Pages.Account
 {
@@ -86,9 +87,23 @@ namespace GCFinalProject.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.UserName, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    MathGameDBContext db = new MathGameDBContext();
                     _logger.LogInformation("User logged in.");
                     //HttpContext.Session.SetInt32("PlayerCurrentScore", 0);
-                    return RedirectToAction("Player", "Player");
+
+                    var currentUser = db.AspNetUsers.SingleOrDefault(u => u.UserName == Input.UserName).Id;
+                    var firstTimeLoggingIn = db.Player.SingleOrDefault(u => u.PlayerId == currentUser).IsFirstTimeLoggingIn;
+
+                    if (firstTimeLoggingIn)
+                    {
+                        db.Player.SingleOrDefault(u => u.PlayerId == currentUser).IsFirstTimeLoggingIn = false;
+                        db.SaveChanges();
+                        return RedirectToAction("IsFirstTimeLogginIn", "Player");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Player", "Player");
+                    }
                 }
                 if (result.RequiresTwoFactor)
                 {

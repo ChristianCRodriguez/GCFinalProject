@@ -1,4 +1,5 @@
-﻿@{
+﻿@model string
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -12,23 +13,17 @@
     }
 </style>
 
-<a href="/Areas/Identity/Pages/Account/Login"></a>
-
-<font size="+6">
-    <p style="text-align:center"><b>Welcome to MathMash!</b></p></font>
-
-    @*<img class="profile-picture" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGqb8TjEBcOlMDa0LqKqSJJfKIMB73c0YmY_Q4c6pC5uhbUpUXgA&s" width="1100" height="700" />*@
 
 
-    @if (User.Identity.IsAuthenticated)
-    {
-        <p>youre logged in, press player</p>
-    }
-    @if (!User.Identity.IsAuthenticated)
-    {
-        <p>you are not logged in. Register here</p>
+<p style="text-align:center">
+    <font size="+6">
+        <b>Welcome to MathMash!</b>
+    </font>
+</p>
 
 
-    }
-
-
+@if(Model == "NewAccount")
+{
+    <h1>Thank you for Registering!</h1>
+    <h3><a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a></h3>
+}
