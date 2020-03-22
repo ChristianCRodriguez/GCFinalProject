@@ -9,15 +9,23 @@
 
 @if (Global.QuizScore <= 100 && Global.QuizScore >= 70)
 {
-    <img id="img_Happy" src="@Url.Content("~/Images/Happy.jpg")" />
+    <img id="img_Happy" src="@Url.Content("~/Images/Excited Nerd.jpg")" />
 }
 else if (Global.QuizScore <= 69 && Global.QuizScore >= 40)
 {
-    <img id="img_Hungry" src="@Url.Content("~/Images/Hungry.jpg")" />
+    <img id="img_Hungry" src="@Url.Content("~/Images/Happyy.jpg")" />
 }
 else if (Global.QuizScore <= 39 && Global.QuizScore >= 1)
 {
-    <img id="img_Angry" src="@Url.Content("~/Images/Angry.jpg")" />
+    <img id="img_Angry" src="@Url.Content("~/Images/Excited.jpg")" />
+}
+else if (Global.CurrentPlayerScore <= 120 && Global.CurrentPlayerScore >= 61)
+{
+    <img id="img_Angry" src="@Url.Content("~/Images/Frustrated.jpg")" />
+}
+else if (Global.CurrentPlayerScore <= 60 && Global.CurrentPlayerScore >= 1)
+{
+    <img id="img_Angry" src="@Url.Content("~/Images/Sad.jpg")" />
 }
 else
 {
