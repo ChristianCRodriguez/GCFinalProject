@@ -30,8 +30,7 @@ namespace GCFinalProject.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-
-                optionsBuilder.UseSqlServer("Server=tcp:gcmathgame.database.windows.net,1433;Initial Catalog=MathGameDB;Persist Security Info=False;User ID=gcadmin;Password=DBPASSWORD;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                optionsBuilder.UseSqlServer("Server=tcp:gcmathgame.database.windows.net,1433;Initial Catalog=MathGameDB;Persist Security Info=False;User ID=gcadmin;Password=WsomgrCD20;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
             }
         }
 
@@ -146,34 +145,54 @@ namespace GCFinalProject.Models
                 entity.Property(e => e.LastFeedDate)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.PlayerId)
+                    .IsRequired()
+                    .HasColumnName("PlayerID")
+                    .HasMaxLength(450);
+
+                entity.HasOne(d => d.Mood)
+                    .WithMany(p => p.Avatar)
+                    .HasForeignKey(d => d.MoodId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Avatar_Mood");
+
+                entity.HasOne(d => d.Player)
+                    .WithMany(p => p.Avatar)
+                    .HasForeignKey(d => d.PlayerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Avatar_AspNetUsers");
             });
 
             modelBuilder.Entity<Mood>(entity =>
             {
-                entity.Property(e => e.MoodId).ValueGeneratedNever();
-
                 entity.Property(e => e.Description)
                     .IsRequired()
                     .HasMaxLength(100);
-
-                entity.Property(e => e.MoodImage).IsRequired();
             });
 
             modelBuilder.Entity<Player>(entity =>
             {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
                 entity.Property(e => e.CreatedDay)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.DifficultyLevel).HasMaxLength(100);
+                entity.Property(e => e.DifficultyLevel)
+                    .IsRequired()
+                    .HasMaxLength(100);
 
                 entity.Property(e => e.LastUpdatedDay)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.PlayerEmail)
-                    .IsRequired()
-                    .HasMaxLength(256);
+                entity.Property(e => e.PlayerId).HasMaxLength(450);
+
+                entity.HasOne(d => d.PlayerNavigation)
+                    .WithMany(p => p.Player)
+                    .HasForeignKey(d => d.PlayerId)
+                    .HasConstraintName("FK_Player_UserID");
             });
 
             OnModelCreatingPartial(modelBuilder);

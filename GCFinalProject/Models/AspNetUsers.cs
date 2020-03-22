@@ -11,6 +11,8 @@ namespace GCFinalProject.Models
             AspNetUserLogins = new HashSet<AspNetUserLogins>();
             AspNetUserRoles = new HashSet<AspNetUserRoles>();
             AspNetUserTokens = new HashSet<AspNetUserTokens>();
+            Avatar = new HashSet<Avatar>();
+            Player = new HashSet<Player>();
         }
 
         public string Id { get; set; }
@@ -33,5 +35,7 @@ namespace GCFinalProject.Models
         public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual ICollection<AspNetUserTokens> AspNetUserTokens { get; set; }
+        public virtual ICollection<Avatar> Avatar { get; set; }
+        public virtual ICollection<Player> Player { get; set; }
     }
 }
