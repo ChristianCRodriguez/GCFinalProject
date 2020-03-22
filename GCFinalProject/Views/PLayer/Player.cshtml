@@ -4,6 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+
 <h1><b>@User.Identity.Name</b></h1>
 
 
@@ -19,14 +21,14 @@ else if (Global.QuizScore <= 39 && Global.QuizScore >= 1)
 {
     <img id="img_Angry" src="@Url.Content("~/Images/Excited.jpg")" />
 }
-else if (Global.CurrentPlayerScore <= 120 && Global.CurrentPlayerScore >= 61)
-{
-    <img id="img_Angry" src="@Url.Content("~/Images/Frustrated.jpg")" />
-}
-else if (Global.CurrentPlayerScore <= 60 && Global.CurrentPlayerScore >= 1)
-{
-    <img id="img_Angry" src="@Url.Content("~/Images/Sad.jpg")" />
-}
+@*else if (Global.CurrentPlayerScore <= 120 && Global.CurrentPlayerScore >= 61)
+    {
+        <img id="img_Angry" src="@Url.Content("~/Images/Frustrated.jpg")" />
+    }
+    else if (Global.CurrentPlayerScore <= 60 && Global.CurrentPlayerScore >= 1)
+    {
+        <img id="img_Angry" src="@Url.Content("~/Images/Sad.jpg")" />
+    }*@
 else
 {
     <img id="img_Farm" src="@Url.Content("~/Images/Farm2.jpg")" style="width:500px;height:300px;" class="align-middle" />
@@ -35,6 +37,21 @@ else
     <div class="card bg-warning">
         <div class="card-body text-center">
             <p class="card-text">Leaderboard</p>
+
+            <table class="table">
+
+                <tr>
+                     <tv>UserName</tv>
+                         <tv>Score</tv>
+
+                </tr>
+                <tr>
+                    <td>@ViewBag.Name</td>
+                    <td>@ViewBag.LeaderScore</td>
+
+                </tr>
+
+            </table>
         </div>
     </div>
     <div class="card bg-warning">
@@ -91,4 +108,3 @@ else
         </div>
     </div>
 </div>
-
