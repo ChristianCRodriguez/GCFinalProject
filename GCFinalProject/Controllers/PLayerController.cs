@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
+
 namespace GCFinalProject.Controllers
 {
     public class PlayerController : Controller
@@ -41,16 +42,40 @@ namespace GCFinalProject.Controllers
             db.Player.Add(player);
 
             db.SaveChanges();
-            return View("~/Views/Home/Index.cshtml",newAccount);
+            return View("~/Views/Home/Index.cshtml", newAccount);
         }
 
         public IActionResult Player()
         {
-            Global.QuizDifficulty = null;
-            Global.QuizScore = 0;
-            Global.QuizCategory = null;
-            return View(); 
+            MathGameDBContext db = new MathGameDBContext();
+            var playerList = db.Player.ToList();
+            var userList = db.AspNetUsers.ToList();
+
+
+            double maxScore = 0;
+            foreach (Player u in db.Player)
+
+            {
+                
+                if (u.PlayerScore > maxScore)
+                {
+                    maxScore = u.PlayerScore;
+                    ViewBag.LeaderScore = maxScore;
+                    //ViewBag.Name = UsrList.Where(i => i.Id == u.PlayerId);
+
+                     var name =
+                     from AspNetUsers in userList 
+                     where u.PlayerId == AspNetUsers.Id
+                     select AspNetUsers.NormalizedUserName;
+                     ViewBag.Name = "Rana";
+                }
+
+             }
+            return View();
         }
+        
+
+
 
         //public IActionResult Status()
         //{
@@ -64,9 +89,9 @@ namespace GCFinalProject.Controllers
         //    {
         //        if (u.PlayerId == UserID)
         //            ViewBag.PlayerScore = u.PlayerScore;
-               
-              
-                  
+
+
+
         //    }
 
         //    return View("Player");
@@ -75,12 +100,26 @@ namespace GCFinalProject.Controllers
         {
             return View();
         }
-        public IActionResult FirstTime()
-        {
-            var playerID = db.AspNetUsers.SingleOrDefault(u => u.UserName == User.Identity.Name).Id;
-            db.Player.SingleOrDefault(u => u.PlayerId == playerID).IsFirstTimeLoggingIn = false;
-            db.SaveChanges();
-            return RedirectToAction("Player");
-        }
+
+        //public IActionResult GetLeader()
+        //{
+        //    MathGameDBContext db = new MathGameDBContext();
+        //    var playerList = db.Player.ToList();
+        //   // var userList = db.AspNetUsers.ToList();
+        //   // var UserID = HttpContext.Session.GetInt32("current");
+        //    double maxScore = 0;
+        //    foreach (Player u in db.Player)
+
+        //    {
+
+        //        if (u.PlayerScore > maxScore)
+        //         maxScore = u.PlayerScore;
+        //        ViewBag.LeaderScore = maxScore;
+
+        //    }
+
+        //    return View("Player");
+        //}
+
     }
 }
