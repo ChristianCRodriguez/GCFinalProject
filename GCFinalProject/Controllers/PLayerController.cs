@@ -46,6 +46,9 @@ namespace GCFinalProject.Controllers
 
         public IActionResult Player()
         {
+            Global.QuizDifficulty = null;
+            Global.QuizScore = 0;
+            Global.QuizCategory = null;
             return View(); 
         }
 
@@ -72,6 +75,12 @@ namespace GCFinalProject.Controllers
         {
             return View();
         }
-
+        public IActionResult FirstTime()
+        {
+            var playerID = db.AspNetUsers.SingleOrDefault(u => u.UserName == User.Identity.Name).Id;
+            db.Player.SingleOrDefault(u => u.PlayerId == playerID).IsFirstTimeLoggingIn = false;
+            db.SaveChanges();
+            return RedirectToAction("Player");
+        }
     }
 }

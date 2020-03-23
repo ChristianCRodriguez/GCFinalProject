@@ -187,11 +187,14 @@ namespace GCFinalProject.Models
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
 
-                entity.Property(e => e.PlayerId).HasMaxLength(450);
+                entity.Property(e => e.PlayerId)
+                    .IsRequired()
+                    .HasMaxLength(450);
 
                 entity.HasOne(d => d.PlayerNavigation)
                     .WithMany(p => p.Player)
                     .HasForeignKey(d => d.PlayerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Player_UserID");
             });
 

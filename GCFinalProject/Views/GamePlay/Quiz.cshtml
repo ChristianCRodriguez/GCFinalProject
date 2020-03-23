@@ -1,10 +1,20 @@
-﻿q@model Question
+﻿@model Question
 @{
     ViewData["Title"] = "Quiz";
     Layout = "~/Views/Shared/_Layout.cshtml";
     var test = Model.correct_choice;
     int i = 0;
 }
+
+    <style>
+        body {
+            background-image: url(/Images/Fields.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+        }
+    </style>
 
 <h1>Question</h1>
 <div class="container text-center">
@@ -68,10 +78,9 @@
                 }
             },
             error: function (req, status, error) {
-                alert(error);
+                console.log(error);
             }
             });
         });
-        
     });
 </script>

@@ -7,9 +7,8 @@ namespace GCFinalProject
 {
     public class Global
     {
-        public static int QuizScore { get; set; }
+        public static double QuizScore { get; set; }
         public static string QuizDifficulty { get; set; }
         public static int? QuizCategory { get; set; }
-        public static string PlayerID { get; set; }
     }
 }

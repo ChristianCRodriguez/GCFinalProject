@@ -4,10 +4,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1><b>@User.Identity.Name</b></h1>
+    <style>
+        body {
+            background-image: url(/Images/Fields.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+        }
+    </style>
+
+<h3><b>Hello, @User.Identity.Name!</b></h3>
 
 
-@if (Global.QuizScore <= 100 && Global.QuizScore >= 70)
+@*@if (Global.QuizScore <= 100 && Global.QuizScore >= 70)
 {
     <img id="img_Happy" src="@Url.Content("~/Images/Excited Nerd.jpg")" />
 }
@@ -19,18 +29,18 @@ else if (Global.QuizScore <= 39 && Global.QuizScore >= 1)
 {
     <img id="img_Angry" src="@Url.Content("~/Images/Excited.jpg")" />
 }
-else if (Global.CurrentPlayerScore <= 120 && Global.CurrentPlayerScore >= 61)
+else if (Global.QuizScore <= 120 && Global.QuizScore >= 61)
 {
     <img id="img_Angry" src="@Url.Content("~/Images/Frustrated.jpg")" />
 }
-else if (Global.CurrentPlayerScore <= 60 && Global.CurrentPlayerScore >= 1)
+else if (Global.QuizScore <= 60 && Global.QuizScore >= 1)
 {
     <img id="img_Angry" src="@Url.Content("~/Images/Sad.jpg")" />
 }
 else
 {
     <img id="img_Farm" src="@Url.Content("~/Images/Farm2.jpg")" style="width:500px;height:300px;" class="align-middle" />
-}
+}*@
 <div class="card-deck">
     <div class="card bg-warning">
         <div class="card-body text-center">
@@ -39,18 +49,11 @@ else
     </div>
     <div class="card bg-warning">
         <div class="card-body text-center">
-            <form asp-controller="GamePlay" asp-action="QuizQuestion">
+            <p><b>Math Quiz</b></p>
+            <form asp-controller="GamePlay" asp-action="QuizQuestion" onsubmit="return ValidateForm()">
                 <p>
-                    <b>Please Select Your Level:</b>
-                    <select name="Difficulty">
-                        <option value="beginner">Beginner</option>
-                        <option value="intermediate">Intermediate</option>
-                        <option value="advanced">Advanced</option>
-                    </select>
-                </p>
-                <p>
-                    <b>Please select your category:</b>
-                    <select name="Category">
+                    <b>Select your category:</b>
+                    <select id="categories" name="Category" class="form-control">
                         <option value="0">Simple Arithmetic</option>
                         <option value="1">Fraction Arithmetic</option>
                         <option value="2">Exponent Radicals Arithmetic</option>
@@ -79,6 +82,14 @@ else
                         <option value="25">Second Order Differential Equations</option>
                     </select>
                 </p>
+                <p>
+                    <b>Select Your Level:</b>
+                    <select id="difficulties" name="Difficulty" class="form-control">
+                        <option id="b" value="beginner">Beginner</option>
+                        <option id="i" value="intermediate">Intermediate</option>
+                        <option id="a" value="advanced">Advanced</option>
+                    </select>
+                </p>
                 <div class="form-group">
                     <input type="submit" class="form-control btn btn-primary" value="Start Quiz" />
                 </div>
@@ -92,3 +103,96 @@ else
     </div>
 </div>
 
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#categories').change(function () {
+            var selection = $('#categories').val();
+            if (selection == 4 || selection == 14 || selection == 17 || selection == 20) {
+                $('#difficulties').val($('#b').val());
+                $('#b').prop("disabled", false);
+                $('#i').prop("disabled", true);
+                $('#a').prop("disabled", true);
+            }
+            else if (selection == 12) {
+                $('#difficulties').val($('#i').val());
+                $('#b').prop("disabled", true);
+                $('#i').prop("disabled", false);
+                $('#a').prop("disabled", true);
+            }
+            else if (selection == 9 || selection == 10) {
+                $('#difficulties').val($('#b').val());
+                $('#b').prop("disabled", false);
+                $('#i').prop("disabled", true);
+                $('#a').prop("disabled", true);
+            }
+            else if (selection == 2 || selection == 3 || selection == 8 || selection == 11 || selection == 13 || selection == 16 || selection == 19 || selection == 22 || selection == 23) {
+                $('#difficulties').val($('#a').val());
+                $('#b').prop("disabled", true);
+                $('#i').prop("disabled", true);
+                $('#a').prop("disabled", false);
+            }
+            else {
+                $('#difficulties').val($('#b').val());
+                $('#b').prop("disabled", false);
+                $('#i').prop("disabled", false);
+                $('#a').prop("disabled", false);
+            }
+        });
+    });
+    
+        function ValidateForm() {
+            var mCategory = $('#categories').val();
+            var mDifficulty = $('#difficulties').val();
+
+            if (mCategory == 12) {
+                if (mDifficulty == "beginner" || mDifficulty == "advanced") {
+                    return true;
+                }
+                else {
+                    alert("Please select an enabled difficulty for this category.");
+                    return false;
+                }
+            }
+            else if (mCategory == 9 || mCategory == 10) {
+                if (mDifficulty == "intermediate" || mDifficulty == "advanced") {
+                    return true;
+                }
+                else {
+                    alert("Please select an enabled difficulty for this category.");
+                    return false;
+                }
+            }
+            else if (mCategory == 4 || mCategory == 14 || mCategory == 17 || mCategory == 20) {
+                if (mDifficulty == "beginner") {
+                    return true;
+                }
+                else {
+                    alert("Please select an enabled difficulty for this category.");
+                    return false;
+                }
+            }
+            else if (mCategory == 2 || mCategory == 3 || mCategory == 8 || mCategory == 11 || mCategory == 13 || mCategory == 16 || mCategory == 19 || mCategory == 22 || mCategory == 23) {
+                if (mDifficulty == "advanced") {
+                    return true;
+                }
+                else {
+                    alert("Please select an enabled difficulty for this category.");
+                    return false;
+                }
+            }
+            else if (mCategory == 0 || mCategory == 1 || mCategory == 5 || mCategory == 6 || mCategory == 7 || mCategory == 15 || mCategory == 18 || mCategory == 21 || mCategory == 24 || mCategory == 25) {
+                if (mDifficulty == "beginner" || mDifficulty == "intermediate" || mDifficulty == "advanced") {
+                    return true;
+                }
+                else {
+                    alert("Please select an enabled difficulty for this category.");
+                    return false;
+                }
+            }
+            else {
+                alert("Please select a real category");
+                return false;
+            }
+        }
+</script>

@@ -1,8 +1,17 @@
-﻿@model int
+﻿@model double
 @{
     ViewData["Title"] = "QuizComplete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+    <style>
+        body {
+            background-image: url(/Images/QuizComplete.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+        }
+    </style>
 
                         <h1><b>Quiz Complete!</b></h1>
 @if (Model > 1)
@@ -13,3 +22,7 @@ else
 {
     <h3><b>You earned a total of @Model point</b></h3>
 }
+
+<form asp-action="Player" asp-controller="PLayer">
+    <input type="submit" class="btn btn-primary" value="Return To Player Screen" />
+</form>

@@ -4,11 +4,23 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <h1>Welcome to MathMash!</h1>
+<style>
+    body {
+        background-image: url(/Images/Fields.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+    }
+</style>
 
-    <h1>The name of the game is to answer as many questions right as possible. The more you answer correct the more points you earn.  Points in the end affect your avatars overall mood.  Higher the level the higher the reward so be careful and make your selection wisely</h1>
+<h1>Welcome to MathMash!</h1>
 
-    <p><a asp-controller="PLayer" asp-action="Player">Continue</a></p>
+<p>The name of the game is to answer as many questions right as possible. The more you answer correct the more points you earn.  Points in the end affect your avatars overall mood.  Higher the level the higher the reward so be careful and make your selection wisely</p>
+
+<form asp-controller="PLayer" asp-action="FirstTime">
+    <input type="submit" class="btn btn-primary" value="Understood!" />
+</form>
 
 
 

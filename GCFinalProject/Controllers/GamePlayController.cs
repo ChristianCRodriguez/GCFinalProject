@@ -48,6 +48,11 @@ namespace GCFinalProject.Controllers
             { 25, "/api/v1/calculus/second-order-differential-equations.json"}
         };
 
+        public string GetPlayer()
+        {
+            var currentPlayerID = db.AspNetUsers.SingleOrDefault(u => u.UserName == User.Identity.Name).Id;
+            return currentPlayerID;
+        }
 
         public GamePlayController(ILogger<HomeController> logger, IConfiguration config)
         {
@@ -89,14 +94,28 @@ namespace GCFinalProject.Controllers
 
         public IActionResult QuizComplete()
         {
-            int score = Global.QuizScore;
-            //add score to player
-            //add time to avatar
-            ResetQuiz();
-            return View("~/Views/GamePlay/QuizComplete.cshtml", score);
-        }
+            string playerID = GetPlayer();
+            double initialScore = Global.QuizScore;
+            double newScore = 0;
+            if(Global.QuizDifficulty == "advanced")
+            {
+                newScore = initialScore * 2;
+            }
+            else if(Global.QuizDifficulty == "intermediate")
+            {
+                newScore = initialScore * 1.5;
+            }
+            else
+            {
+                newScore = initialScore;
+            }
 
-        //101046445745 apple case id
+            db.Player.SingleOrDefault(u => u.PlayerId == playerID).PlayerScore += newScore;
+            db.SaveChanges();
+
+            ResetQuiz();
+            return View("~/Views/GamePlay/QuizComplete.cshtml", newScore);
+        }
 
         public async Task<IActionResult> QuizQuestion(string difficulty, int? category = null)
         {
@@ -105,16 +124,16 @@ namespace GCFinalProject.Controllers
 
             difficulty = difficulty == null ? Global.QuizDifficulty : difficulty;
             category = category == null ? Global.QuizCategory : category;
-
+            
             Question question = new Question();
             using (HttpClient httpClient = new HttpClient())
             {
                 httpClient.DefaultRequestHeaders.Add("Authorization", _config["MathApiKey"]);
-                using (var response = await httpClient.GetAsync("https://studycounts.com" + mathCategories[category] + "?" + difficulty.ToLower()))
+                using (var response = await httpClient.GetAsync($"https://studycounts.com{mathCategories[category]}?difficulty={difficulty}"))
                 {
-                    string test = await response.Content.ReadAsStringAsync();
-                    jdoc = JsonDocument.Parse(test);
-                    question = JsonSerializer.Deserialize<Question>(test);
+                    string questionResponse = await response.Content.ReadAsStringAsync();
+                    //jdoc = JsonDocument.Parse(questionResponse);
+                    question = JsonSerializer.Deserialize<Question>(questionResponse);
                 }
             }
 
@@ -125,6 +144,7 @@ namespace GCFinalProject.Controllers
         {
             Global.QuizDifficulty = null;
             Global.QuizScore = 0;
+            Global.QuizCategory = null;
         }
     }
 }

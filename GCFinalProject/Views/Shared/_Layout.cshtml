@@ -35,14 +35,10 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                         }
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="GamePlay" asp-action="QuizQuestion">QuizTest</a>
-                        </li>
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Player" asp-action="Player">Player</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Player" asp-action="Player">Player Status</a>
                             </li>
                         }
                     </ul>
