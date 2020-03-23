@@ -12,6 +12,7 @@ namespace GCFinalProject.Models
         public DateTime? LastUpdatedDay { get; set; }
         public bool IsFirstTimeLoggingIn { get; set; }
         public string PlayerId { get; set; }
+        public string PlayerUserName { get; set; }
 
         public virtual AspNetUsers PlayerNavigation { get; set; }
     }

@@ -1,7 +1,8 @@
-﻿
+﻿@model PlayerStatus
 @{
     ViewData["Title"] = "Player";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 1;
 }
 
     <style>
@@ -44,21 +45,29 @@ else
 <div class="card-deck">
     <div class="card bg-warning">
         <div class="card-body text-center">
-            <p class="card-text">Leaderboard</p>
-            <table class="table">
-
-                <tr>
-                    <tv>UserName</tv>
-                    <tv>Score</tv>
-
-                </tr>
-                <tr>
-                    <td>@ViewBag.Name</td>
-                    <td>@ViewBag.LeaderScore</td>
-
-                </tr>
-
-            </table>
+            <p class="card-text"><b>Leaderboard</b></p>
+            <div style="position:relative; height:400px;overflow:auto; display:block;">
+                <table class="table table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>UserName</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var player in Model.Leaderboard)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td>@player.PlayerUserName</td>
+                                <td>@player.PlayerScore</td>
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <div class="card bg-warning">

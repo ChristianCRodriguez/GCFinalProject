@@ -191,6 +191,10 @@ namespace GCFinalProject.Models
                     .IsRequired()
                     .HasMaxLength(450);
 
+                entity.Property(e => e.PlayerUserName)
+                    .IsRequired()
+                    .HasMaxLength(256);
+
                 entity.HasOne(d => d.PlayerNavigation)
                     .WithMany(p => p.Player)
                     .HasForeignKey(d => d.PlayerId)
