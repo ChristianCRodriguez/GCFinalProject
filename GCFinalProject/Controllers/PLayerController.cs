@@ -47,6 +47,10 @@ namespace GCFinalProject.Controllers
 
         public IActionResult Player()
         {
+            Global.QuizDifficulty = null;
+            Global.QuizScore = 0;
+            Global.QuizCategory = null;
+
             MathGameDBContext db = new MathGameDBContext();
             var playerList = db.Player.ToList();
             var userList = db.AspNetUsers.ToList();
@@ -54,9 +58,7 @@ namespace GCFinalProject.Controllers
 
             double maxScore = 0;
             foreach (Player u in db.Player)
-
             {
-                
                 if (u.PlayerScore > maxScore)
                 {
                     maxScore = u.PlayerScore;
@@ -69,13 +71,9 @@ namespace GCFinalProject.Controllers
                      select AspNetUsers.NormalizedUserName;
                      ViewBag.Name = "Rana";
                 }
-
              }
             return View();
         }
-        
-
-
 
         //public IActionResult Status()
         //{
@@ -83,17 +81,11 @@ namespace GCFinalProject.Controllers
         //    var playerList = db.Player.ToList();
         //    var userList = db.AspNetUsers.ToList();
         //    var UserID = HttpContext.Session.GetInt32("current");
-
         //    foreach (Player u in db.Player)
-
         //    {
         //        if (u.PlayerId == UserID)
         //            ViewBag.PlayerScore = u.PlayerScore;
-
-
-
         //    }
-
         //    return View("Player");
         //}
         public IActionResult IsFirstTimeLogginIn()
@@ -120,6 +112,12 @@ namespace GCFinalProject.Controllers
 
         //    return View("Player");
         //}
-
+        public IActionResult FirstTime()
+        {
+            var playerID = db.AspNetUsers.SingleOrDefault(u => u.UserName == User.Identity.Name).Id;
+            db.Player.SingleOrDefault(u => u.PlayerId == playerID).IsFirstTimeLoggingIn = false;
+            db.SaveChanges();
+            return RedirectToAction("Player");
+        }
     }
 }
