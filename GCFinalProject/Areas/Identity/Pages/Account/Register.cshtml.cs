@@ -100,13 +100,12 @@ namespace GCFinalProject.Areas.Identity.Pages.Account
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
+                    
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
+                        //Added in this data to route the email over to a different action to finish populating an entry into our Player Table.
                         var routeValues = new RouteValueDictionary { { "email", Input.Email} };
                         return RedirectToAction("CreatePlayer", "Player", routeValues);
-                        //return RedirectToPage("Login");
-                        //return RedirectToPage("RegisterConfirmation", new { email = Input.Email });
                     }
                     else
                     {

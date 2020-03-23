@@ -22,11 +22,21 @@ namespace GCFinalProject.Controllers
             _logger = logger;
             _config = config;
         }
+
+        //Used to get the current user logged in
+        public string GetPlayer()
+        {
+            var currentPlayerID = db.AspNetUsers.SingleOrDefault(u => u.UserName == User.Identity.Name).Id;
+            return currentPlayerID;
+        }
+
         public IActionResult Index()
         {
             return View();
         }
 
+        //CreatePlayer takes the email used when registering to find the new user created in AspNetUsers
+        //To then create a new entry in our Player Table and to link them via AspNetUsers.ID and Player.PlayerID
         public IActionResult CreatePlayer(string email)
         {
             var registeredUser = db.AspNetUsers.SingleOrDefault(u => u.Email == email);
@@ -47,47 +57,39 @@ namespace GCFinalProject.Controllers
             return View("~/Views/Home/Index.cshtml", newAccount);
         }
 
+        //Gathers data necessary to be displayed on the PlayerStatus Page/View
         public IActionResult Player()
         {
+            var user = GetPlayer();
             Global.QuizDifficulty = null;
             Global.QuizScore = 0;
             Global.QuizCategory = null;
 
             PlayerStatus ps = new PlayerStatus();
-
             ps.Leaderboard = db.Player.OrderByDescending(u => u.PlayerScore).Take(10).ToList();
 
-
-            //var playerList = db.Player.ToList();
-            //var userList = db.AspNetUsers.ToList();
-
-
-            //double maxScore = 0;
-            //foreach (Player u in db.Player)
-            //{
-            //    if (u.PlayerScore > maxScore)
-            //    {
-            //        maxScore = u.PlayerScore;
-            //        ViewBag.LeaderScore = maxScore;
-            //        //ViewBag.Name = UsrList.Where(i => i.Id == u.PlayerId);
-
-            //         var name =
-            //         from AspNetUsers in userList 
-            //         where u.PlayerId == AspNetUsers.Id
-            //         select AspNetUsers.NormalizedUserName;
-            //         ViewBag.Name = "Rana";
-            //    }
-            // }
             return View(ps);
         }
 
+        //In the event someone has already had monster in the past, this method will send them to the correct view.
         public IActionResult IsFirstTimeLogginIn()
         {
-            return View();
+            var currentUser = GetPlayer();
+            //Checks to see if current user currently has or has had an avatar in the past
+            if (db.Avatar.SingleOrDefault(u => u.PlayerId == currentUser) == null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Player");
+            }
         }
 
-        public IActionResult FirstTime()
+        //Generates your first monster
+        public IActionResult FirstTime(string monsterName)
         {
+            var name = monsterName;
             var playerID = db.AspNetUsers.SingleOrDefault(u => u.UserName == User.Identity.Name).Id;
             db.Player.SingleOrDefault(u => u.PlayerId == playerID).IsFirstTimeLoggingIn = false;
             db.SaveChanges();

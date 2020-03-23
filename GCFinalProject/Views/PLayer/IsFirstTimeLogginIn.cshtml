@@ -18,9 +18,24 @@
 
 <p>The name of the game is to answer as many questions right as possible. The more you answer correct the more points you earn.  Points in the end affect your avatars overall mood.  Higher the level the higher the reward so be careful and make your selection wisely</p>
 
-<form asp-controller="PLayer" asp-action="FirstTime">
-    <input type="submit" class="btn btn-primary" value="Understood!" />
-</form>
+<div class="container">
+    <p>In order to start, please give your monster a name!</p>
+    <p>No more than 100 characters</p>
+    <div class="row">
+        <div class="col-sm">
+            <form asp-controller="Player" asp-action="FirstTime" method="post" onsubmit="ValidateForm()">
+                <input type="text" placeholder="Enter a Name" class="form-control" id="monsterName" name="monsterName" maxlength="100" />
+                <input type="submit" class="btn btn-primary" value="Ready!" />
+            </form>
+        </div>
+        <div class="col-sm"></div>
+        <div class="col-sm"></div>
+    </div>
+</div>
 
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    function ValidateForm() {
 
-
+    }
+</script>

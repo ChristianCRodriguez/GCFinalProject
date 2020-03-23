@@ -17,7 +17,7 @@ namespace GCFinalProject.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _config;
         private MathGameDBContext db = new MathGameDBContext();
-        private JsonDocument jdoc;
+        //list of all endpoints
         private Dictionary<int?, string> mathCategories = new Dictionary<int?, string>()
         {
             { 0, "/api/v1/arithmetic/simple.json"},
@@ -48,6 +48,7 @@ namespace GCFinalProject.Controllers
             { 25, "/api/v1/calculus/second-order-differential-equations.json"}
         };
 
+        //Gets current player logged in
         public string GetPlayer()
         {
             var currentPlayerID = db.AspNetUsers.SingleOrDefault(u => u.UserName == User.Identity.Name).Id;
@@ -78,6 +79,7 @@ namespace GCFinalProject.Controllers
 
         }
 
+        //this method takes in the answer you selected in the quiz and the correct answer and validates if it was correct or not.
         [HttpPost]
         public string ValidateQuizAnswer(int playerAnswer, int correctAnswer)
         {
@@ -92,6 +94,9 @@ namespace GCFinalProject.Controllers
             }
         }
 
+        //When the player finishes their quiz, this method takes their score and if intermediate or advanced difficulty was selected, will multiply their score.
+        //After that it will also add the score to your overall score player record.
+        //It will also add "time" to your monster
         public IActionResult QuizComplete()
         {
             string playerID = GetPlayer();
@@ -117,11 +122,14 @@ namespace GCFinalProject.Controllers
             return View("~/Views/GamePlay/QuizComplete.cshtml", newScore);
         }
 
+        //This method takes takes in the difficulty and category of math questions when you started your quiz and returns a question.
         public async Task<IActionResult> QuizQuestion(string difficulty, int? category = null)
         {
+            //this section checks to see if the quiz variables are null. If they are, we set them to the variables you selected when starting your quiz.
             Global.QuizDifficulty = Global.QuizDifficulty == null ? difficulty : Global.QuizDifficulty;
             Global.QuizCategory = Global.QuizCategory == null ? category : Global.QuizCategory;
 
+            //when selecting next question in the quiz view, it does not come back with any values, this section checks to see if the values are null, if so, they will be set to the quiz variables set when the quiz started
             difficulty = difficulty == null ? Global.QuizDifficulty : difficulty;
             category = category == null ? Global.QuizCategory : category;
             
@@ -132,7 +140,6 @@ namespace GCFinalProject.Controllers
                 using (var response = await httpClient.GetAsync($"https://studycounts.com{mathCategories[category]}?difficulty={difficulty}"))
                 {
                     string questionResponse = await response.Content.ReadAsStringAsync();
-                    //jdoc = JsonDocument.Parse(questionResponse);
                     question = JsonSerializer.Deserialize<Question>(questionResponse);
                 }
             }
@@ -140,6 +147,7 @@ namespace GCFinalProject.Controllers
             return View("~/Views/GamePlay/Quiz.cshtml",question);
         }
 
+        //Takes quiz variables and resets them to default values
         public void ResetQuiz()
         {
             Global.QuizDifficulty = null;
