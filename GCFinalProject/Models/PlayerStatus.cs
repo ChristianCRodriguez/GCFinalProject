@@ -8,5 +8,6 @@ namespace GCFinalProject.Models
     public class PlayerStatus
     {
         public List<Player> Leaderboard { get; set; }
+        public Avatar CurrentAvatar { get; set; }
     }
 }

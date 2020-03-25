@@ -23,7 +23,7 @@
     <p>No more than 100 characters</p>
     <div class="row">
         <div class="col-sm">
-            <form asp-controller="Player" asp-action="FirstTime" method="post" onsubmit="ValidateForm()">
+            <form asp-controller="Player" asp-action="FirstTime" method="post" onsubmit="return ValidateForm()">
                 <input type="text" placeholder="Enter a Name" class="form-control" id="monsterName" name="monsterName" maxlength="100" />
                 <input type="submit" class="btn btn-primary" value="Ready!" />
             </form>
@@ -36,6 +36,15 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
     function ValidateForm() {
+        var monsterName = $('#monsterName').val().trim();
+        var nameRegex = "^[a-zA-Z][^#&<>\"~;$^%{}?]{1,100}$";
 
+        if (monsterName.match(nameRegex)) {
+            return true;
+        }
+        else {
+            alert("Invalid Monster Name");
+            return false;
+        }
     }
 </script>

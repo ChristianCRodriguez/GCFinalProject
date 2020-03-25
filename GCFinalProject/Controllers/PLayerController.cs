@@ -67,6 +67,7 @@ namespace GCFinalProject.Controllers
 
             PlayerStatus ps = new PlayerStatus();
             ps.Leaderboard = db.Player.OrderByDescending(u => u.PlayerScore).Take(10).ToList();
+            ps.CurrentAvatar = db.Avatar.SingleOrDefault(u => u.PlayerId == user && u.IsActive == true);
 
             return View(ps);
         }
@@ -89,10 +90,27 @@ namespace GCFinalProject.Controllers
         //Generates your first monster
         public IActionResult FirstTime(string monsterName)
         {
-            var name = monsterName;
+            var name = monsterName.Trim();
             var playerID = db.AspNetUsers.SingleOrDefault(u => u.UserName == User.Identity.Name).Id;
-            db.Player.SingleOrDefault(u => u.PlayerId == playerID).IsFirstTimeLoggingIn = false;
-            db.SaveChanges();
+
+            if (db.Avatar.SingleOrDefault(u => u.PlayerId == playerID) == null)
+            {
+                db.Player.SingleOrDefault(u => u.PlayerId == playerID).IsFirstTimeLoggingIn = false;
+
+                DateTime date = DateTime.Now;
+                Avatar newAvatar = new Avatar();
+
+                newAvatar.AvatarEnergy = 1152;
+                newAvatar.AvatarName = name;
+                newAvatar.IsActive = true;
+                newAvatar.PlayerId = playerID;
+                newAvatar.ExpireDate = new DateTime(date.Year, date.Month, date.AddDays(1).Day, date.Hour, date.Minute, date.Second);
+                newAvatar.LastFeedDate = date;
+                newAvatar.MoodId = 5;
+                db.Avatar.Add(newAvatar);
+                db.SaveChanges();
+            }
+
             return RedirectToAction("Player");
         }
     }

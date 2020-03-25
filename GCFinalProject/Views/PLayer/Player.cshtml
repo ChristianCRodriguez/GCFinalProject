@@ -3,47 +3,50 @@
     ViewData["Title"] = "Player";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int i = 1;
+
+    
+
 }
 
-    <style>
-        body {
-            background-image: url(/Images/Fields.png);
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-attachment: fixed;
-        }
-    </style>
+<style>
+    body {
+        background-image: url(/Images/Fields.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+    }
+</style>
 
 <h3><b>Hello, @User.Identity.Name!</b></h3>
 
 
 @*@if (Global.QuizScore <= 100 && Global.QuizScore >= 70)
-{
-    <img id="img_Happy" src="@Url.Content("~/Images/Excited Nerd.jpg")" />
-}
-else if (Global.QuizScore <= 69 && Global.QuizScore >= 40)
-{
-    <img id="img_Hungry" src="@Url.Content("~/Images/Happyy.jpg")" />
-}
-else if (Global.QuizScore <= 39 && Global.QuizScore >= 1)
-{
-    <img id="img_Angry" src="@Url.Content("~/Images/Excited.jpg")" />
-}
-else if (Global.QuizScore <= 120 && Global.QuizScore >= 61)
-{
-    <img id="img_Angry" src="@Url.Content("~/Images/Frustrated.jpg")" />
-}
-else if (Global.QuizScore <= 60 && Global.QuizScore >= 1)
-{
-    <img id="img_Angry" src="@Url.Content("~/Images/Sad.jpg")" />
-}
-else
-{
-    <img id="img_Farm" src="@Url.Content("~/Images/Farm2.jpg")" style="width:500px;height:300px;" class="align-middle" />
-}*@
+    {
+        <img id="img_Happy" src="@Url.Content("~/Images/Excited Nerd.jpg")" />
+    }
+    else if (Global.QuizScore <= 69 && Global.QuizScore >= 40)
+    {
+        <img id="img_Hungry" src="@Url.Content("~/Images/Happyy.jpg")" />
+    }
+    else if (Global.QuizScore <= 39 && Global.QuizScore >= 1)
+    {
+        <img id="img_Angry" src="@Url.Content("~/Images/Excited.jpg")" />
+    }
+    else if (Global.QuizScore <= 120 && Global.QuizScore >= 61)
+    {
+        <img id="img_Angry" src="@Url.Content("~/Images/Frustrated.jpg")" />
+    }
+    else if (Global.QuizScore <= 60 && Global.QuizScore >= 1)
+    {
+        <img id="img_Angry" src="@Url.Content("~/Images/Sad.jpg")" />
+    }
+    else
+    {
+        <img id="img_Farm" src="@Url.Content("~/Images/Farm2.jpg")" style="width:500px;height:300px;" class="align-middle" />
+    }*@
 <div class="card-deck">
-    <div class="card bg-warning">
+    <div class="card bg-light">
         <div class="card-body text-center">
             <p class="card-text"><b>Leaderboard</b></p>
             <div style="position:relative; height:400px;overflow:auto; display:block;">
@@ -70,7 +73,7 @@ else
             </div>
         </div>
     </div>
-    <div class="card bg-warning">
+    <div class="card bg-light">
         <div class="card-body text-center">
             <p><b>Math Quiz</b></p>
             <form asp-controller="GamePlay" asp-action="QuizQuestion" onsubmit="return ValidateForm()">
@@ -119,9 +122,48 @@ else
             </form>
         </div>
     </div>
-    <div class="card bg-warning">
+    <div class="card bg-light">
         <div class="card-body text-center">
             <p class="card-text">Stats</p>
+        </div>
+    </div>
+</div>
+<div>
+    &nbsp;
+</div>
+<div class="card-deck">
+    <div class="card bg-light">
+        <div class="card-body text-center">
+            test
+        </div>
+    </div>
+    <div class="card bg-light">
+        <div class="card-body text-center">
+            @if (Model.CurrentAvatar.MoodId == 6)
+            {
+            <img src="~/Images/ExcitedMonster.png" style="max-width: 50%;"/>
+            }
+            else if (Model.CurrentAvatar.MoodId == 5)
+            {
+            <img src="~/Images/HappyMonster.png" style="max-width: 50%;"/>
+            }
+            else if (Model.CurrentAvatar.MoodId == 4)
+            {
+            <img src="~/Images/SillyMonster.png" style="max-width: 50%;"/>
+            }
+            else if (Model.CurrentAvatar.MoodId == 3)
+            {
+            <img src="~/Images/UpsetMonster.png" style="max-width: 50%;"/>
+            }
+            else if (Model.CurrentAvatar.MoodId == 2)
+            {
+            <img src="~/Images/SurprisedMonster.png" style="max-width: 50%;"/>
+            }
+            else
+            {
+            <img src="~/Images/Farm2.jpg" style="max-width: 50%;"/>
+            }
+            <p><b>@Model.CurrentAvatar.AvatarName</b></p>
         </div>
     </div>
 </div>
@@ -163,59 +205,59 @@ else
             }
         });
     });
-    
-        function ValidateForm() {
-            var mCategory = $('#categories').val();
-            var mDifficulty = $('#difficulties').val();
 
-            if (mCategory == 12) {
-                if (mDifficulty == "beginner" || mDifficulty == "advanced") {
-                    return true;
-                }
-                else {
-                    alert("Please select an enabled difficulty for this category.");
-                    return false;
-                }
-            }
-            else if (mCategory == 9 || mCategory == 10) {
-                if (mDifficulty == "intermediate" || mDifficulty == "advanced") {
-                    return true;
-                }
-                else {
-                    alert("Please select an enabled difficulty for this category.");
-                    return false;
-                }
-            }
-            else if (mCategory == 4 || mCategory == 14 || mCategory == 17 || mCategory == 20) {
-                if (mDifficulty == "beginner") {
-                    return true;
-                }
-                else {
-                    alert("Please select an enabled difficulty for this category.");
-                    return false;
-                }
-            }
-            else if (mCategory == 2 || mCategory == 3 || mCategory == 8 || mCategory == 11 || mCategory == 13 || mCategory == 16 || mCategory == 19 || mCategory == 22 || mCategory == 23) {
-                if (mDifficulty == "advanced") {
-                    return true;
-                }
-                else {
-                    alert("Please select an enabled difficulty for this category.");
-                    return false;
-                }
-            }
-            else if (mCategory == 0 || mCategory == 1 || mCategory == 5 || mCategory == 6 || mCategory == 7 || mCategory == 15 || mCategory == 18 || mCategory == 21 || mCategory == 24 || mCategory == 25) {
-                if (mDifficulty == "beginner" || mDifficulty == "intermediate" || mDifficulty == "advanced") {
-                    return true;
-                }
-                else {
-                    alert("Please select an enabled difficulty for this category.");
-                    return false;
-                }
+    function ValidateForm() {
+        var mCategory = $('#categories').val();
+        var mDifficulty = $('#difficulties').val();
+
+        if (mCategory == 12) {
+            if (mDifficulty == "beginner" || mDifficulty == "advanced") {
+                return true;
             }
             else {
-                alert("Please select a real category");
+                alert("Please select an enabled difficulty for this category.");
                 return false;
             }
         }
+        else if (mCategory == 9 || mCategory == 10) {
+            if (mDifficulty == "intermediate" || mDifficulty == "advanced") {
+                return true;
+            }
+            else {
+                alert("Please select an enabled difficulty for this category.");
+                return false;
+            }
+        }
+        else if (mCategory == 4 || mCategory == 14 || mCategory == 17 || mCategory == 20) {
+            if (mDifficulty == "beginner") {
+                return true;
+            }
+            else {
+                alert("Please select an enabled difficulty for this category.");
+                return false;
+            }
+        }
+        else if (mCategory == 2 || mCategory == 3 || mCategory == 8 || mCategory == 11 || mCategory == 13 || mCategory == 16 || mCategory == 19 || mCategory == 22 || mCategory == 23) {
+            if (mDifficulty == "advanced") {
+                return true;
+            }
+            else {
+                alert("Please select an enabled difficulty for this category.");
+                return false;
+            }
+        }
+        else if (mCategory == 0 || mCategory == 1 || mCategory == 5 || mCategory == 6 || mCategory == 7 || mCategory == 15 || mCategory == 18 || mCategory == 21 || mCategory == 24 || mCategory == 25) {
+            if (mDifficulty == "beginner" || mDifficulty == "intermediate" || mDifficulty == "advanced") {
+                return true;
+            }
+            else {
+                alert("Please select an enabled difficulty for this category.");
+                return false;
+            }
+        }
+        else {
+            alert("Please select a real category");
+            return false;
+        }
+    }
 </script>
