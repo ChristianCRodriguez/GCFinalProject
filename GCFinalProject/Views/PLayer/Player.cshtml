@@ -4,8 +4,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     int i = 1;
 
-    
-
+    var remainingTime = Model.CurrentAvatar.ExpireDate - DateTime.Now;
+    TimeSpan dayDiff = DateTime.Now.Subtract(Model.CurrentPlayer.CreatedDay); 
 }
 
 <style>
@@ -20,59 +20,7 @@
 
 <h3><b>Hello, @User.Identity.Name!</b></h3>
 
-
-@*@if (Global.QuizScore <= 100 && Global.QuizScore >= 70)
-    {
-        <img id="img_Happy" src="@Url.Content("~/Images/Excited Nerd.jpg")" />
-    }
-    else if (Global.QuizScore <= 69 && Global.QuizScore >= 40)
-    {
-        <img id="img_Hungry" src="@Url.Content("~/Images/Happyy.jpg")" />
-    }
-    else if (Global.QuizScore <= 39 && Global.QuizScore >= 1)
-    {
-        <img id="img_Angry" src="@Url.Content("~/Images/Excited.jpg")" />
-    }
-    else if (Global.QuizScore <= 120 && Global.QuizScore >= 61)
-    {
-        <img id="img_Angry" src="@Url.Content("~/Images/Frustrated.jpg")" />
-    }
-    else if (Global.QuizScore <= 60 && Global.QuizScore >= 1)
-    {
-        <img id="img_Angry" src="@Url.Content("~/Images/Sad.jpg")" />
-    }
-    else
-    {
-        <img id="img_Farm" src="@Url.Content("~/Images/Farm2.jpg")" style="width:500px;height:300px;" class="align-middle" />
-    }*@
 <div class="card-deck">
-    <div class="card bg-light">
-        <div class="card-body text-center">
-            <p class="card-text"><b>Leaderboard</b></p>
-            <div style="position:relative; height:400px;overflow:auto; display:block;">
-                <table class="table table-striped mb-0">
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>UserName</th>
-                            <th>Score</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var player in Model.Leaderboard)
-                        {
-                            <tr>
-                                <td>@i</td>
-                                <td>@player.PlayerUserName</td>
-                                <td>@player.PlayerScore</td>
-                            </tr>
-                            i++;
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
     <div class="card bg-light">
         <div class="card-body text-center">
             <p><b>Math Quiz</b></p>
@@ -124,48 +72,105 @@
     </div>
     <div class="card bg-light">
         <div class="card-body text-center">
+            @if (Model.CurrentAvatar.MoodId == 6)
+            {
+                <img src="~/Images/ExcitedMonster.png" style="max-width: 50%;" />
+            }
+            else if (Model.CurrentAvatar.MoodId == 5)
+            {
+                <img src="~/Images/HappyMonster.png" style="max-width: 50%;" />
+            }
+            else if (Model.CurrentAvatar.MoodId == 4)
+            {
+                <img src="~/Images/SillyMonster.png" style="max-width: 50%;" />
+            }
+            else if (Model.CurrentAvatar.MoodId == 3)
+            {
+                <img src="~/Images/UpsetMonster.png" style="max-width: 50%;" />
+            }
+            else if (Model.CurrentAvatar.MoodId == 2)
+            {
+                <img src="~/Images/SurprisedMonster.png" style="max-width: 50%;" />
+            }
+            else
+            {
+                <img src="~/Images/Farm2.jpg" style="max-width: 50%;" />
+            }
+            <p><b>@Model.CurrentAvatar.AvatarName</b></p>
+            <p>Current Score: @Model.CurrentAvatar.AvatarEnergy / 1440</p>
+            <p>Last Time Fed: @Model.CurrentAvatar.LastFeedDate</p>
+            <p>Remaining Time:</p>
+            <div id="countdown"></div>
+            <script>
+                    function countdownTimer() {
+                        const difference = +new Date(@Model.CurrentAvatar.ExpireDate.Year, @Model.CurrentAvatar.ExpireDate.Month, @Model.CurrentAvatar.ExpireDate.Day, @Model.CurrentAvatar.ExpireDate.Hour, @Model.CurrentAvatar.ExpireDate.Minute, @Model.CurrentAvatar.ExpireDate.Second, @Model.CurrentAvatar.ExpireDate.Millisecond) - +new Date();
+                        let remaining = "Time's up!";
+
+                        if (difference > 0) {
+                            const parts = {
+                                hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+                                minutes: Math.floor((difference / 1000 / 60) % 60),
+                                seconds: Math.floor((difference / 1000) % 60)
+                            };
+
+                            remaining = Object.keys(parts)
+                                .map(part => {
+                                    if (!parts[part]) return;
+                                    return `${parts[part]} ${part}`;
+                                })
+                                .join(" ");
+                        }
+
+                        document.getElementById("countdown").innerHTML = remaining;
+                    }
+                    countdownTimer();
+                    setInterval(countdownTimer, 1000);
+            </script>
+        </div>
+    </div>
+</div>
+
+    &nbsp;
+<div class="card-deck">
+    <div class="card bg-light">
+        <div class="card-body text-center">
+            <p class="card-text"><b>Leaderboard</b></p>
+            <div style="position:relative; height:400px;overflow:auto; display:block;">
+                <table class="table table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>UserName</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var player in Model.Leaderboard)
+                        {
+                            <tr>
+                                <td>@i</td>
+                                <td>@player.PlayerUserName</td>
+                                <td>@player.PlayerScore</td>
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card bg-light">
+        <div class="card-body text-center">
             <p class="card-text">Stats</p>
+            
+            <p>Score: @Model.CurrentPlayer.PlayerScore</p>
+            <p>Join Date: @Model.CurrentPlayer.CreatedDay</p>
+            <p>Days with us: @dayDiff.Days</p>
         </div>
     </div>
 </div>
 <div>
-    &nbsp;
-</div>
-<div class="card-deck">
-    <div class="card bg-light">
-        <div class="card-body text-center">
-            test
-        </div>
-    </div>
-    <div class="card bg-light">
-        <div class="card-body text-center">
-            @if (Model.CurrentAvatar.MoodId == 6)
-            {
-            <img src="~/Images/ExcitedMonster.png" style="max-width: 50%;"/>
-            }
-            else if (Model.CurrentAvatar.MoodId == 5)
-            {
-            <img src="~/Images/HappyMonster.png" style="max-width: 50%;"/>
-            }
-            else if (Model.CurrentAvatar.MoodId == 4)
-            {
-            <img src="~/Images/SillyMonster.png" style="max-width: 50%;"/>
-            }
-            else if (Model.CurrentAvatar.MoodId == 3)
-            {
-            <img src="~/Images/UpsetMonster.png" style="max-width: 50%;"/>
-            }
-            else if (Model.CurrentAvatar.MoodId == 2)
-            {
-            <img src="~/Images/SurprisedMonster.png" style="max-width: 50%;"/>
-            }
-            else
-            {
-            <img src="~/Images/Farm2.jpg" style="max-width: 50%;"/>
-            }
-            <p><b>@Model.CurrentAvatar.AvatarName</b></p>
-        </div>
-    </div>
+
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -260,4 +265,6 @@
             return false;
         }
     }
+
+
 </script>

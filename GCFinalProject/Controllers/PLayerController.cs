@@ -68,7 +68,7 @@ namespace GCFinalProject.Controllers
             PlayerStatus ps = new PlayerStatus();
             ps.Leaderboard = db.Player.OrderByDescending(u => u.PlayerScore).Take(10).ToList();
             ps.CurrentAvatar = db.Avatar.SingleOrDefault(u => u.PlayerId == user && u.IsActive == true);
-
+            ps.CurrentPlayer = db.Player.SingleOrDefault(u => u.PlayerId == user);
             return View(ps);
         }
 
@@ -100,13 +100,13 @@ namespace GCFinalProject.Controllers
                 DateTime date = DateTime.Now;
                 Avatar newAvatar = new Avatar();
 
-                newAvatar.AvatarEnergy = 1152;
+                newAvatar.AvatarEnergy = 960;
                 newAvatar.AvatarName = name;
                 newAvatar.IsActive = true;
                 newAvatar.PlayerId = playerID;
                 newAvatar.ExpireDate = new DateTime(date.Year, date.Month, date.AddDays(1).Day, date.Hour, date.Minute, date.Second);
                 newAvatar.LastFeedDate = date;
-                newAvatar.MoodId = 5;
+                newAvatar.MoodId = 4;
                 db.Avatar.Add(newAvatar);
                 db.SaveChanges();
             }

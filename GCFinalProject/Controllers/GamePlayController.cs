@@ -102,6 +102,7 @@ namespace GCFinalProject.Controllers
             string playerID = GetPlayer();
             double initialScore = Global.QuizScore;
             double newScore = 0;
+            double monsterEnergy = 0;
             if(Global.QuizDifficulty == "advanced")
             {
                 newScore = initialScore * 2;
@@ -115,7 +116,62 @@ namespace GCFinalProject.Controllers
                 newScore = initialScore;
             }
 
+
+            monsterEnergy = Math.Floor(newScore * 30);
+            DateTime expDate = db.Avatar.SingleOrDefault(u => u.PlayerId == playerID && u.IsActive == true).ExpireDate;
+            DateTime newExpDate = expDate.AddHours(newScore/2);
+
+            int monsterMood = db.Avatar.SingleOrDefault(u => u.PlayerId == playerID && u.IsActive == true).MoodId;
+            int currentEnergy = db.Avatar.SingleOrDefault(u => u.PlayerId == playerID && u.IsActive == true).AvatarEnergy;
             db.Player.SingleOrDefault(u => u.PlayerId == playerID).PlayerScore += newScore;
+            db.Avatar.SingleOrDefault(u => u.PlayerId == playerID && u.IsActive == true).LastFeedDate = DateTime.Now;
+            db.Avatar.SingleOrDefault(u => u.PlayerId == playerID && u.IsActive == true).ExpireDate = newExpDate;
+
+
+            if(newExpDate >= DateTime.Now.AddDays(1))
+            {
+                db.Avatar.SingleOrDefault(u => u.PlayerId == playerID && u.IsActive == true).ExpireDate = DateTime.Now.AddDays(1);
+            }
+            else
+            {
+                db.Avatar.SingleOrDefault(u => u.PlayerId == playerID && u.IsActive == true).ExpireDate = newExpDate;
+            }
+
+            if((currentEnergy + Convert.ToInt32(monsterEnergy)) > 1440)
+            {
+                int energyDiff = 1440 - currentEnergy;
+                db.Avatar.SingleOrDefault(u => u.PlayerId == playerID && u.IsActive == true).AvatarEnergy += energyDiff;
+            }
+            else
+            {
+                db.Avatar.SingleOrDefault(u => u.PlayerId == playerID && u.IsActive == true).AvatarEnergy += Convert.ToInt32(monsterEnergy);
+            }
+
+            if(currentEnergy >= 1380 && currentEnergy <= 1440)
+            {
+                db.Avatar.SingleOrDefault(u => u.PlayerId == playerID && u.IsActive == true).MoodId = 6;
+            }
+            else if (currentEnergy >= 1081 && currentEnergy <= 1379)
+            {
+                db.Avatar.SingleOrDefault(u => u.PlayerId == playerID && u.IsActive == true).MoodId = 5;
+            }
+            else if (currentEnergy >= 721 && currentEnergy <= 1080)
+            {
+                db.Avatar.SingleOrDefault(u => u.PlayerId == playerID && u.IsActive == true).MoodId = 4;
+            }
+            else if (currentEnergy >= 361 && currentEnergy <= 720)
+            {
+                db.Avatar.SingleOrDefault(u => u.PlayerId == playerID && u.IsActive == true).MoodId = 3;
+            }
+            else if (currentEnergy >= 1 && currentEnergy <= 360)
+            {
+                db.Avatar.SingleOrDefault(u => u.PlayerId == playerID && u.IsActive == true).MoodId = 2;
+            }
+            else
+            {
+                db.Avatar.SingleOrDefault(u => u.PlayerId == playerID && u.IsActive == true).MoodId = 1;
+            }
+
             db.SaveChanges();
 
             ResetQuiz();

@@ -9,5 +9,6 @@ namespace GCFinalProject.Models
     {
         public List<Player> Leaderboard { get; set; }
         public Avatar CurrentAvatar { get; set; }
+        public Player CurrentPlayer { get; set; }
     }
 }
